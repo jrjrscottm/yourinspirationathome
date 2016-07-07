@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0-*",
+  "description": "Akka.Persistence.Sql.Common Class Library",
+  "authors": [ "scott.meyer" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Akka": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "Akka.Persistence": "1.0.0-*",
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {"System.Data": "4.0.0.0"}
+    }
+  }
+}

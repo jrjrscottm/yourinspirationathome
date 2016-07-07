@@ -1,0 +1,23 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Akka.Remote Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "resource": [
+    "Configuration/Remote.conf"
+  ],
+
+  "dependencies": {
+    "Akka": "1.0.0-*",
+    "Google.ProtocolBuffers": "2.4.1.555",
+    "Helios": "2.1.1",
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "frameworks": {
+    "net452": { }
+  }
+}

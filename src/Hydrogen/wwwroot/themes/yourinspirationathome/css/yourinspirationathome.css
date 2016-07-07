@@ -1,0 +1,70 @@
+.main-content {
+  background-color: #fff; }
+
+.buffer-sm-top {
+  margin-top: 10px; }
+
+.buffer-md-left {
+  left: 20px; }
+
+.center-block {
+  float: none; }
+
+.body-content {
+  background-color: #fff; }
+
+body {
+  font-family: 'Ropa Sans', sans-serif;
+  background: #423629 url("/themes/yourinspirationathome/images/brown_linen_background.jpg") repeat; }
+
+.jumbotron {
+  margin-top: 35px;
+  background-color: #fff; }
+  .jumbotron h1 {
+    font-size: 32px;
+    text-align: center; }
+  .jumbotron p {
+    font-size: 17px;
+    text-align: justify; }
+
+.btn-primary {
+  font-family: Teko, sans-serif;
+  font-size: 25px;
+  background-color: #271d16;
+  border: 1px solid #ac9e91;
+  color: #fff; }
+  .btn-primary :focus, .btn-primary :hover, .btn-primary :active:focus {
+    background-color: #77ae9a;
+    border: 1px solid #ac9e91; }
+
+.registration div {
+  background-color: #fff; }
+
+.registration form {
+  background-color: #fff;
+  padding: 15px; }
+  .registration form h4 {
+    color: #271d16;
+    font-weight: bold; }
+
+.registration .submit {
+  width: 200px;
+  right: 10px; }
+
+.profile {
+  padding-top: 75px; }
+  .profile .picture {
+    padding-top: 20px; }
+
+.tool-card {
+  margin: 30px 0; }
+  .tool-card.tool-box {
+    margin-top: 65px; }
+    .tool-card.tool-box img {
+      max-width: 175px; }
+    .tool-card.tool-box h5 {
+      width: 40px;
+      margin: auto; }
+
+
+.main-content{background-color:#fff;}.buffer-sm-top{margin-top:10px;}.buffer-md-left{left:20px;}.center-block{float:none;}.body-content{background-color:#fff;}body{font-family:'Ropa Sans',sans-serif;background:#423629 url("/themes/yourinspirationathome/images/brown_linen_background.jpg") repeat;}.jumbotron{margin-top:35px;background-color:#fff;}.jumbotron h1{font-size:32px;text-align:center;}.jumbotron p{font-size:17px;text-align:justify;}.btn-primary{font-family:Teko,sans-serif;font-size:25px;background-color:#271d16;border:1px solid #ac9e91;color:#fff;}.btn-primary :focus,.btn-primary :hover,.btn-primary :active:focus{background-color:#77ae9a;border:1px solid #ac9e91;}.registration div{background-color:#fff;}.registration form{background-color:#fff;padding:15px;}.registration form h4{color:#271d16;font-weight:bold;}.registration .submit{width:200px;right:10px;}.profile{padding-top:75px;}.profile .picture{padding-top:20px;}.tool-card{margin:30px 0;}.tool-card.tool-box{margin-top:65px;}.tool-card.tool-box img{max-width:175px;}.tool-card.tool-box h5{width:40px;margin:auto;}

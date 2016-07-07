@@ -1,0 +1,23 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Helium.Contracts Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Akka": {
+      "version": "1.0.0-*",
+      "target": "project"
+    }
+  },
+
+    "frameworks": {
+      "net452": {
+        "dependencies": {
+        }
+      }
+    }
+  }
+

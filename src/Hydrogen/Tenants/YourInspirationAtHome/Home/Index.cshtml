@@ -1,0 +1,50 @@
+﻿@using System.Security.Claims
+@{
+    Layout = "_Layout";
+}
+
+
+<div class="container profile">
+    <div class="col-lg-5">
+        <div class="col-lg-6 picture">
+            <img src="https://placehold.it/200x225" />    
+        </div>
+        <div class="col-lg-6">
+            <div class="row">
+                <h3>welcome back</h3>
+            </div>
+            <div class="row">
+                @{@User.FindFirst(x => x.Type == ClaimTypes.Name).Value}
+            </div>
+            <div class="row">
+                <h4>Joined:</h4>
+            </div>
+            <div class="row">
+                <h4>Sales Level:</h4>
+            </div>
+            <div class="row">
+                <h4>Next Level:</h4>
+            </div>
+            <div class="row">
+                <form method="POST" action="/account/logoff">
+                    <input type="submit" value="Log off" class="btn btn-primary" />
+                    @Html.AntiForgeryToken()
+                </form>          
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="col-lg-4 tool-card tool-box">
+            <img src="/images/toolbox.png"/>
+            <h5>Toolbox</h5>
+        </div>
+        <div class="col-lg-4 tool-card">
+            <img src="https://placehold.it/175x300" />
+        </div>
+        <div class="col-lg-4 tool-card">
+            <img src="https://placehold.it/175x300" />
+        </div>
+    </div>
+</div>
+
+@Html.Partial("News")

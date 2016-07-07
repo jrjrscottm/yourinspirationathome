@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "description": "Helium.Earnings Console Application",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": "1.0.0",
+        "Microsoft.CSharp": "4.0.1",
+        "System.Dynamic.Runtime": "4.0.11"
+      }
+    },
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "Microsoft.CSharp": "4.0.1",
+        "System.Dynamic.Runtime": "4.0.11"
+      }
+    },
+    "net452" : {
+      "dependencies": {"Microsoft.CSharp": "4.0.0"}
+    }
+  },
+  "dependencies": {
+    "Dapper": "1.50.0-rc3",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
+
+  }
+}

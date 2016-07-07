@@ -1,0 +1,30 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/site.css",
+    "inputFile": "wwwroot/css/site.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/defaults.css",
+    "inputFile": "wwwroot/css/defaults.scss"
+  },
+  {
+    "outputFile": "Tenants/Agel/assets/css/_mixins.css",
+    "inputFile": "Tenants/Agel/assets/css/_mixins.scss"
+  },
+  {
+    "outputFile": "Tenants/Agel/assets/css/_variables.css",
+    "inputFile": "Tenants/Agel/assets/css/_variables.scss"
+  },
+  {
+    "outputFile": "Tenants/Agel/assets/css/grayscale.css",
+    "inputFile": "Tenants/Agel/assets/css/grayscale.scss"
+  },
+  {
+    "outputFile": "Tenants/YourInspirationAtHome/assets/css/yiah.css",
+    "inputFile": "Tenants/YourInspirationAtHome/assets/css/yiah.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/themify-icons.css",
+    "inputFile": "wwwroot/css/themify-icons.scss"
+  }
+]

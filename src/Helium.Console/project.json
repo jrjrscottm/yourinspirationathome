@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0-*",
+  "description": "Helium.Console Console Application",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "runtimes": {
+    "win10-x64": {}
+  },
+
+  "resource": [
+    "Templates/CommandHelpTemplate.tpl",
+    "Templates/ApplicationHelpTemplate.tpl"
+  ],
+
+  "dependencies": {
+    "Akka.Remote": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "Akka.Serialization.Wire": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "Helium.Contracts": {
+      "version": "1.0.0-*",
+      "target": "project"
+    }
+  },
+
+  "commands": {
+    "Helium.Console": "Helium.Console"
+  },
+
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {
+        "System.Runtime": ""
+      }
+    }
+  }
+}

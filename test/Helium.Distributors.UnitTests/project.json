@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0-*",
+  "description": "Helium.Distributors.UnitTests Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "AutoFixture": "3.48.0",
+    "AutoFixture.AutoMoq": "3.48.0",
+    "Helium.Distributors": {"version" :"1.0.0-*", "target": "project"},
+    "Moq": "4.5.10",
+    "xunit": "2.1.0"
+  },
+
+  "commands": {
+    
+  },
+
+  "frameworks": {
+    "net452": {
+    }
+  }
+
+}

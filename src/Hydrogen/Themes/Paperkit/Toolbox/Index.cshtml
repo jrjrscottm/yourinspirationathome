@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "/Themes/Paperkit/Shared/_Layout.cshtml";
+}
+
+@model ToolboxViewModel
+
+@Html.Partial("_Navigation", "toolbox")
+
+<div class="main-panel">
+    @Html.Partial("_TopNavigation", "Toolbox")
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4 col-md-5">
+                    @foreach (var tool in Model.Tools)
+                    {
+                        <div class="card">
+                            <div class="content">
+                                <div class="description text-center">
+                                    <h4 class="title"><i class="fa fa-video-camera fa-4 icon-success" aria-hidden="true"></i> @tool.Name</h4>
+                                    @if (tool.IsSubscribed)
+                                    {
+                                        <a href="/videostore" class="btn btn-default" role="button">Manage</a>
+                                    }
+                                    else
+                                    {
+                                        <div class="btn btn-default" role="button">Signup!</div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-lg-4 col-md-5">
+                        <div class="card">
+                            <div class="content">
+                                <div class="description text-center">
+                                    <h4 class="title"><i class="fa fa-comments-o fa-4 icon-success" aria-hidden="true"></i>  Coming Soon!</h4>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <div class="col-lg-4 col-md-5">
+                    <div class="card">
+                        <div class="content">
+                            <div class="description text-center">
+                                <h4 class="title"><i class="fa fa-area-chart fa-4 icon-success" aria-hidden="true"></i>  Coming Soon!</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

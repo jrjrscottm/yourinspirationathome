@@ -1,0 +1,89 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h1 class="brand-heading"><span class="light">Register</span> Now</h1>
+                    <p class="intro-text">Start by filling out the form below</p>
+                    <a href="#register" class="btn btn-circle page-scroll">
+                        <i class="fa fa-angle-double-down animated"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content-section" id="register">
+    
+        <form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal" role="form">
+            <div class="col-lg-offset-2 col-lg-6">
+                <img src="/themes/agel/images/agel-logo-green_0.png"/>
+            </div>
+                <div class="col-lg-offset-2 col-lg-6">
+                    <h4>Create a new account.</h4>
+                    <hr />
+                </div>
+                <div class="col-lg-offset-4 col-lg-8">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConsultantId" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="ConsultantId" class="form-control" />
+                            <span asp-validation-for="ConsultantId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Email" class="form-control"/>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <select class="form-control" id="Country" name="Country">
+                                <option value="">Country...</option>
+                                <option value="ITA">Italy</option>
+                                <option value="USA">United States</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-4 col-lg-8">
+                            <button type="submit" class="btn btn-default">Register</button>
+                        </div>
+                    </div>
+                </div>
+</form>
+   
+</div>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,3 @@
+﻿function hi() {
+    alert('hello');
+}

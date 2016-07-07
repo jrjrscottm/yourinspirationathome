@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Newtonsoft.Json": "8.0.3",
+    "System.Net.Http": "4.1.0"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App":"1.0.0"
+      },
+      "imports": "dnxcore50"
+    }
+  }
+}

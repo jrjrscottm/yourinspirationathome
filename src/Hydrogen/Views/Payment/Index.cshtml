@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Payment Information";
+}
+@model PaymentMethodViewModel
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="container-fluid">
+        <div class="col-md-6">
+            Update your payment information
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><img class="pull-right" src="http://i76.imgup.net/accepted_c22e0.png">Payment Details</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form>
+                                    <div id="payment-form"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts {
+        <script src="https://js.braintreegateway.com/js/braintree-2.24.0.min.js"></script>
+        <script type="text/javascript">
+            var clientToken = '@Model.ClientToken';
+            $(function () {
+                braintree.setup(clientToken, "dropin", {
+                    container: "payment-form"
+                });
+            });
+        </script>
+    }

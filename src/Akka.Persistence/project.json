@@ -1,0 +1,34 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Akka.Persistence Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "resource": [
+    "persistence.conf"
+  ],
+
+  "runtimes": { "win10-x64": {} },
+
+  "dependencies": {
+    "Akka": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "Google.ProtocolBuffers": "2.4.1.555",
+    "Newtonsoft.Json": "9.0.1",
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "frameworks": {
+    "net452": {
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
+    }
+  }
+}

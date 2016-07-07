@@ -1,0 +1,80 @@
+﻿@import '../../../../wwwroot/css/defaults';
+
+body {
+    font-family: 'Ropa Sans', sans-serif;
+    background:
+        #423629
+        url("/themes/yourinspirationathome/images/brown_linen_background.jpg") repeat;
+}
+
+.jumbotron {
+    margin-top: 35px;
+    background-color: #fff;
+
+    h1 {
+        font-size: 32px;
+        text-align: center;
+    }
+
+    p {
+        font-size: 17px;
+        text-align: justify;
+    }
+}
+
+.btn-primary {
+    font-family: Teko, sans-serif;
+    font-size: 25px;
+    background-color: #271d16;    border: 1px solid #ac9e91;
+    color: #fff;
+
+    :focus, :hover, :active:focus {
+        background-color: #77ae9a;
+        border: 1px solid #ac9e91;
+    }
+}
+
+.registration {
+    div {
+        background-color: #fff;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 15px;
+
+        h4 {
+            color: #271d16;
+            font-weight: bold;
+        }
+    }
+
+    .submit {
+        width: 200px;
+        right: 10px;
+    }
+}
+
+.profile {
+    padding-top:75px;
+    .picture { 
+        padding-top:20px;
+    }
+    .card {
+        
+    }
+}
+
+.tool-card{
+    margin: 30px 0;
+    &.tool-box{
+        margin-top:65px;
+        img{
+            max-width:175px;
+        }
+        h5 {
+            width:40px;
+            margin: auto;
+        }
+    }
+}

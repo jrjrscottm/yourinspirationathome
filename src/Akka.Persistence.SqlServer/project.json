@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0-*",
+  "description": "Akka.Persistence.SqlServer Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Akka": "1.0.0-*",
+    "Akka.Persistence": "1.0.0-*",
+    "Akka.Persistence.Sql.Common": "1.0.0-*",
+    "Google.ProtocolBuffers": "2.4.1.555",
+    "Newtonsoft.Json": "7.0.1",
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "resource": [
+    "sql-server.conf"
+  ],
+
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {"System.Data": "4.0.0.0"}   
+    }
+  }
+}

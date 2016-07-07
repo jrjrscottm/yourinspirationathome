@@ -1,0 +1,17 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Akka.Serialization.Wire Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Akka": "1.0.0-*",
+    "Wire": "0.0.6"
+  },
+
+  "frameworks": {
+    "net452": { }
+  }
+}

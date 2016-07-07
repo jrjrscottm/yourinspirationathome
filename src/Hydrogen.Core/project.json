@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {},
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": { "Microsoft.NETCore.App": "1.0.0" },
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
+    },
+    "netstandard1.6": {
+      "dependencies": { "NETStandard.Library": "1.6.0" },
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
+    }
+  }
+}

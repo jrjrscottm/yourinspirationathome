@@ -1,0 +1,40 @@
+﻿@using System.Security.Claims
+<div class="sidebar" data-background-color="white" data-active-color="danger">
+    <!--
+        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+    -->
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a href="/manage" class="simple-text">
+                @(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value)
+            </a>
+        </div>
+        <ul class="nav">
+            <li class="@( Model == "home" ? "active" : "")">
+                <a href="/home">
+                    <i class="fa fa-tachometer"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="@( Model == "profile" ? "active" : "")">
+                <a href="/manage/profile">
+                    <i class="fa fa-user"></i>
+                    <p>User Profile</p>
+                </a>
+            </li>
+            <li class="@( Model == "payment-details" ? "active" : "")">
+                <a href="/account/payment-details">
+                    <i class="fa fa-credit-card"></i>
+                    <p>Payment Details</p>
+                </a>
+            </li>
+            <li class="@( Model == "toolbox" ? "active" : "")">
+                <a href="/toolbox">
+                    <i class="fa fa-cogs"></i>
+                    <p>Toolbox</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

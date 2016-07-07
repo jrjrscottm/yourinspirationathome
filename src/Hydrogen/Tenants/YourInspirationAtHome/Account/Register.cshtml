@@ -1,0 +1,111 @@
+﻿@model RegisterViewModel
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container-fluid registration">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row profile-intro">
+                <div class="col-md-9 center-block"><h4>Tell us who you are so we can start setting up your profile!</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9 center-block"><h5>* All fields are required.</h5></div>
+            </div>
+            
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal" role="form">
+                    <h4>Consultant Information</h4>
+                    <hr/>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <input asp-for="FullName" class="form-control"/>
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConsultantId" class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <input asp-for="ConsultantId" class="form-control"/>
+                            <span asp-validation-for="ConsultantId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <input asp-for="Email" class="form-control"/>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Country" class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <select class="form-control" id="Country" name="Country">
+                                <option value="">Country...</option>
+                                <option value="ITA">Italy</option>
+                                <option value="USA">United States</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <input asp-for="Password" class="form-control"/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <input asp-for="ConfirmPassword" class="form-control"/>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-5 col-md-2 submit">
+                            <button type="submit" class="btn btn-primary btn-block btn-register">Register</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                @{
+                    var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                    if (loginProviders.Count > 0)
+                    {
+                        
+                        <section>
+                            <h4>Use another service to log register.</h4>
+                            <hr />
+
+                            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in loginProviders)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">@provider.AuthenticationScheme</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        </section>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

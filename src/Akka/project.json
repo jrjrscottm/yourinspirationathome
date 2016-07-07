@@ -1,0 +1,34 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Akka Class Library",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "resource": [
+    "Configuration/Pigeon.conf"
+  ],
+
+  "dependencies": {
+    "Newtonsoft.Json": "9.0.1",
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "runtimes": {"win10-x64": { } },
+
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Configuration": "",
+        "System.Xml": "",
+        "System.Collections": ""
+      },
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
+    }
+  }
+}

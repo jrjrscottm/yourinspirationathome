@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Nucleon Lab";
+}
+<div class="container">
+    <div class="col-md-offset-3 col-md-6">
+        <ul class="list-group">
+            <li class="list-group-item active">Nucleons</li>
+            @foreach (var nucleon in @Model)
+            {
+                <li class="list-group-item"><a href="http://@nucleon.Hostnames[0]">@nucleon.Name</a></li>
+            }
+        </ul>
+    </div>
+</div>
+    

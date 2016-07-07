@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "/Themes/Paperkit/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Payment Information";
+}
+
+@model PaymentMethodViewModel
+@Html.Partial("_Navigation", "payment-details")
+
+<div class="main-panel">
+    @Html.Partial("_TopNavigation", "Payment Information")
+    <div class="container-fluid content">
+        <div>
+            <div class="card col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-offset-3 col-md-6">
+                            @if (!string.IsNullOrEmpty(Model.Name))
+                            {
+                                <div class="row">
+                                    Payment method: @Model.Name
+                                </div>
+
+                            }
+                            else
+                            {
+
+                            <form method="post" action="/account/payment-details">
+                                <div class="row">
+                                    <div id="payment-form" />
+                                </div>
+                                <div class="row">
+                                    <input type="submit" value="Add Payment Method" class="btn btn-lg"/>
+                                </div>
+                            </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://js.braintreegateway.com/js/braintree-2.24.0.min.js"></script>
+    <script type="text/javascript">
+        var clientToken = '@Model.ClientToken';
+        $(function () {
+            braintree.setup(clientToken, "dropin", {
+                container: "payment-form"
+            });
+        });
+    </script>
+}

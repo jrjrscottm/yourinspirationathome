@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0-*",
+  "description": "Helium.Registration Console Application",
+  "authors": [ "scott.meyer" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "runtimes": {
+    "win10-x64": {}
+  },
+
+  "dependencies": {
+    "Akka": { "target": "project" },
+    "Akka.Remote": { "target": "project" },
+    "Akka.Persistence": { "target": "project" },
+    "Akka.Persistence.Sql.Common": { "target": "project" },
+    "Akka.Persistence.SqlServer": { "target": "project" },
+    "Akka.Serialization.Wire": { "target": "project" },
+    "Helium.Contracts": { "target": "project" },
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "commands": {
+    "Helium.Registration": "Helium.Registration"
+  },
+
+  "frameworks": {
+    "net452": {}
+    }
+}
