@@ -26,6 +26,7 @@
 
   "frameworks": {
     "net452": {
+      "dependencies": {},
       "frameworkAssemblies": {
         "System.Runtime": ""
       }

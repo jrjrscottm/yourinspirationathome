@@ -37,8 +37,8 @@ akka {
             actorRef.Tell(new CreateMember(firstName, lastName, sponsorId));
         }
 
-        private string _address;
-        private string _system;
+        private string _address = "localhost:9999";
+        private string _system = "helium";
 
         private string GetGenealogyBasePath(string path)
         {

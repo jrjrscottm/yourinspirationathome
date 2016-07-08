@@ -14,15 +14,14 @@
     "Akka": "1.0.0-*",
     "Google.ProtocolBuffers": "2.4.1.555",
     "Helios": "2.1.1",
-    "System.Collections.Immutable": "1.2.0",
-    "System.Runtime.Extensions": "4.1.0"
+    "System.Collections.Immutable": "1.2.0"
   },
 
   "frameworks": {
-    "net452": {},
-    "netcoreapp10": {
-      "dependencies": {
-        "Google.ProtocolBuffers": 
+    "net452": {
+      "dependencies": {},
+      "frameworkAssemblies": {
+        "System.Runtime.Extensions": ""
       }
     }
   }

@@ -20,6 +20,14 @@ namespace Braintree
     {
         public string ApiVersion = "4";
 
+#if netcoreapp10 == false
+        static BraintreeService()
+        {
+            ServicePointManager
+    .ServerCertificateValidationCallback +=
+    (sender, cert, chain, sslPolicyErrors) => true;
+        }
+#endif
         protected Configuration Configuration;
 
         public Environment Environment
@@ -116,8 +124,10 @@ namespace Braintree
                     Proxy = !string.IsNullOrEmpty(proxy) ? new BasicProxy(proxy) : null,
                     UseProxy = !string.IsNullOrEmpty(proxy)
                 };
+#if netcoreapp10
                 WinHttpHandler handler = new WinHttpHandler();
                 SetServerCertificateValidationCallback(handler);
+#endif
                 var client = new HttpClient(decompressionHandler)
                 {
                     Timeout = TimeSpan.FromMilliseconds(Configuration.Timeout),
@@ -139,6 +149,7 @@ namespace Braintree
             }
         }
 
+#if netcoreapp10
         static void SetServerCertificateValidationCallback(WinHttpHandler handler)
         {
             handler.ServerCertificateValidationCallback = ChainValidator(handler.ServerCertificateValidationCallback);
@@ -176,6 +187,8 @@ namespace Braintree
             return false;
         }
 
+
+#endif
         private XmlNode ParseResponseStream(Stream stream)
         {
             var body = new StreamReader(stream).ReadToEnd();
