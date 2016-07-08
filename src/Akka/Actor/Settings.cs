@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Akka.Configuration;
 using Akka.Dispatch;
 using Akka.Routing;
+using System.Reflection;
 
 namespace Akka.Actor
 {
@@ -63,7 +64,7 @@ namespace Akka.Actor
             var providerType = Type.GetType(ProviderClass);
             if (providerType == null)
                 throw new ConfigurationException(string.Format("'akka.actor.provider' is not a valid type name : '{0}'", ProviderClass));
-            if (!typeof(IActorRefProvider).IsAssignableFrom(providerType))
+            if (!typeof(IActorRefProvider).GetTypeInfo().IsAssignableFrom(providerType))
                 throw new ConfigurationException(string.Format("'akka.actor.provider' is not a valid actor ref provider: '{0}'", ProviderClass));
             
             SupervisorStrategyClass = Config.GetString("akka.actor.guardian-supervisor-strategy");
@@ -78,7 +79,7 @@ namespace Akka.Actor
             LogLevel = Config.GetString("akka.loglevel");
             StdoutLogLevel = Config.GetString("akka.stdout-loglevel");
             Loggers = Config.GetStringList("akka.loggers");
-
+            LoggersDispatcher = Config.GetString("akka.loggers-dispatcher");
             LoggerStartTimeout = Config.GetTimeSpan("akka.logger-startup-timeout");
 
             //handled
@@ -195,6 +196,12 @@ namespace Akka.Actor
         /// </summary>
         /// <value>The loggers.</value>
         public IList<string> Loggers { get; private set; }
+
+        /// <summary>
+        ///     Gets the default loggers dispatcher.
+        /// </summary>
+        /// <value>The loggers dispatcher.</value>
+        public string LoggersDispatcher { get; private set; }
 
         /// <summary>
         ///     Gets the logger start timeout.

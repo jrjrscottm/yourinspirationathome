@@ -1,5 +1,4 @@
 ﻿/// <autosync enabled="true" />
-/// <reference path="..//// <reference path="../gulpfile.js" />
 /// <reference path="../gulpfile.js" />
 /// <reference path="../tenants/agel/assets/scripts/agel.js" />
 /// <reference path="../Themes/Paperkit/assets/scripts/chartist.min.js" />

@@ -1,6 +1,5 @@
 {
   "projects": [
-    "Hydrogen",
     "src"
   ],
   "sdk": {

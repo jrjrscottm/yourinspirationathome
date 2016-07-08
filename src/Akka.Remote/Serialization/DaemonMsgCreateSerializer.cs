@@ -12,6 +12,7 @@ using Akka.Configuration;
 using Akka.Routing;
 using Akka.Serialization;
 using Google.ProtocolBuffers;
+using System.Reflection;
 
 namespace Akka.Remote.Serialization
 {
@@ -96,7 +97,7 @@ namespace Akka.Remote.Serialization
         private PropsData GetPropsData(Props props)
         {
             var builder = PropsData.CreateBuilder()
-                .SetClazz(props.Type.AssemblyQualifiedName)
+                .SetClazz(props.Type.GetTypeInfo().AssemblyQualifiedName)
                 .SetDeploy(GetDeployData(props.Deploy));
 
             foreach (object arg in props.Arguments)
@@ -122,7 +123,7 @@ namespace Akka.Remote.Serialization
                 .SetPath(deploy.Path);
             if (deploy.Config != ConfigurationFactory.Empty)
                 res.SetConfig(Serialize(deploy.Config));
-            if (deploy.RouterConfig != RouterConfig.NoRouter)
+            if (deploy.RouterConfig != NoRouter.Instance)
                 res.SetRouterConfig(Serialize(deploy.RouterConfig));
             if (deploy.Scope != Deploy.NoScopeGiven)
                 res.SetScope(Serialize(deploy.Scope));
@@ -183,7 +184,7 @@ namespace Akka.Remote.Serialization
             if (protoDeploy.HasRouterConfig)
                 routerConfig = (RouterConfig)Deserialize(protoDeploy.RouterConfig, typeof(RouterConfig));
             else
-                routerConfig = RouterConfig.NoRouter;
+                routerConfig = NoRouter.Instance;
 
             Scope scope;
             if (protoDeploy.HasScope)

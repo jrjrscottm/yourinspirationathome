@@ -8,13 +8,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using Akka.Actor;
 using Akka.Configuration;
 using Akka.Event;
 using Akka.Remote.Transport;
 using Akka.Util.Internal;
+using System.Net;
 
 namespace Akka.Remote
 {
@@ -29,7 +32,7 @@ namespace Akka.Remote
         /// </summary>
         public static string Encode(Address address)
         {
-            return Uri.EscapeUriString(address.ToString());
+            return WebUtility.HtmlEncode(address.ToString());
         }
     }
 

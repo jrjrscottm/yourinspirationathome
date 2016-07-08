@@ -17,7 +17,7 @@ using Akka.Dispatch.SysMsg;
 using Akka.Event;
 using Akka.Serialization;
 using Akka.Util;
-
+using System.Reflection;
 
 namespace Akka.Actor.Internal
 {
@@ -67,6 +67,7 @@ namespace Akka.Actor.Internal
         }
 
         public override IActorRefProvider Provider { get { return _provider; } }
+        
         public override Settings Settings { get { return _settings; } }
         public override string Name { get { return _name; } }
         public override Serialization.Serialization Serialization { get { return _serialization; } }
@@ -81,19 +82,28 @@ namespace Akka.Actor.Internal
 
 
         public override IInternalActorRef Guardian { get { return _provider.Guardian; } }
+        public override IInternalActorRef LookupRoot => _provider.RootGuardian;
         public override IInternalActorRef SystemGuardian { get { return _provider.SystemGuardian; } }
 
 
         /// <summary>Creates a new system actor.</summary>
         public override IActorRef SystemActorOf(Props props, string name = null)
         {
-            return _provider.SystemGuardian.Cell.ActorOf(props, name: name);
+            return _provider.SystemGuardian.Cell.AttachChild(props, true, name);
         }
 
         /// <summary>Creates a new system actor.</summary>
         public override IActorRef SystemActorOf<TActor>(string name = null)
         {
-            return _provider.SystemGuardian.Cell.ActorOf<TActor>(name);
+            return _provider.SystemGuardian.Cell.AttachChild(Props.Create<TActor>(), true, name);
+        }
+
+        internal volatile bool Aborting = false;
+
+        public override void Abort()
+        {
+            Aborting = true;
+            Terminate();
         }
 
         /// <summary>Starts this system</summary>
@@ -133,7 +143,7 @@ namespace Akka.Actor.Internal
 
         public override IActorRef ActorOf(Props props, string name = null)
         {
-            return _provider.Guardian.Cell.ActorOf(props, name: name);
+            return _provider.Guardian.Cell.AttachChild(props, false, name);
         }
 
 
@@ -162,7 +172,7 @@ namespace Akka.Actor.Internal
             foreach(var extensionFqn in _settings.Config.GetStringList("akka.extensions"))
             {
                 var extensionType = Type.GetType(extensionFqn);
-                if(extensionType == null || !typeof(IExtensionId).IsAssignableFrom(extensionType) || extensionType.IsAbstract || !extensionType.IsClass)
+                if(extensionType == null || !typeof(IExtensionId).GetTypeInfo().IsAssignableFrom(extensionType) || extensionType.GetTypeInfo().IsAbstract || !extensionType.GetTypeInfo().IsClass)
                 {
                     _log.Error("[{0}] is not an 'ExtensionId', skipping...", extensionFqn);
                     continue;
@@ -232,7 +242,7 @@ namespace Akka.Actor.Internal
 
         public override bool HasExtension(Type t)
         {
-            if(typeof(IExtension).IsAssignableFrom(t))
+            if(typeof(IExtension).GetTypeInfo().IsAssignableFrom(t))
             {
                 return _extensions.ContainsKey(t);
             }

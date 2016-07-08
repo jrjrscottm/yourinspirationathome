@@ -15,12 +15,12 @@ namespace Helium
         {
             Startup();
 
-            var consultant = Helium.SystemActors.Guardian.ActorOf(Props.Create(() => new Consultant()), "177ca29");
+            //var consultant = Helium.SystemActors.Guardian.ActorOf(Props.Create(() => new Consultant()), "177ca29");
 
-            consultant.Tell(new Consultant.Registered("Scott", "AA-B1234"));
-            consultant.Tell(new Consultant.SayHello());
-            consultant.Tell(new Consultant.Recruited("18e5174"));
-            consultant.Tell(new Consultant.Recruited("f04178e"));
+            //consultant.Tell(new Consultant.Registered("Scott", "AA-B1234"));
+            //consultant.Tell(new Consultant.SayHello());
+            //consultant.Tell(new Consultant.Recruited("18e5174"));
+            //consultant.Tell(new Consultant.Recruited("f04178e"));
             Console.WriteLine("running. press 'q' to quit...");
             Console.ReadLine();
         }

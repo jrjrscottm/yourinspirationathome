@@ -11,47 +11,6 @@ using System.Data.Common;
 namespace Akka.Persistence.Sql.Common.Snapshot
 {
     /// <summary>
-    /// Flattened and serialized snapshot object used as intermediate representation 
-    /// before saving snapshot with metadata inside SQL Server database.
-    /// </summary>
-    public class SnapshotEntry
-    {
-        /// <summary>
-        /// Persistence identifier of persistent actor, current snapshot relates to.
-        /// </summary>
-        public readonly string PersistenceId;
-
-        /// <summary>
-        /// Sequence number used to identify snapshot in it's persistent actor scope.
-        /// </summary>
-        public readonly long SequenceNr;
-
-        /// <summary>
-        /// Timestamp used to specify date, when the snapshot has been made.
-        /// </summary>
-        public readonly DateTime Timestamp;
-
-        /// <summary>
-        /// Stringified fully qualified CLR type name of the serialized object.
-        /// </summary>
-        public readonly string SnapshotType;
-
-        /// <summary>
-        /// Serialized object data.
-        /// </summary>
-        public readonly byte[] Snapshot;
-
-        public SnapshotEntry(string persistenceId, long sequenceNr, DateTime timestamp, string snapshotType, byte[] snapshot)
-        {
-            PersistenceId = persistenceId;
-            SequenceNr = sequenceNr;
-            Timestamp = timestamp;
-            SnapshotType = snapshotType;
-            Snapshot = snapshot;
-        }
-    }
-
-    /// <summary>
     /// Query builder used for prepare SQL commands used for snapshot store persistence operations.
     /// </summary>
     public interface ISnapshotQueryBuilder

@@ -8,8 +8,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>2fcdb463-067a-41af-9a12-ca0c8675af30</ProjectGuid>
     <RootNamespace>Akka.Persistence.Sql.Common</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.obj\</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">bin\</OutputPath>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

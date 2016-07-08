@@ -18,7 +18,9 @@ namespace Akka.Persistence
     /// To update a view with messages that have been written after handling this request, another <see cref="Update"/> 
     /// request must be sent to the view.
     /// </summary>
+#if SERIALIZATION
     [Serializable]
+#endif
     public sealed class Update
     {
         public Update()
@@ -53,7 +55,9 @@ namespace Akka.Persistence
         public long ReplayMax { get; private set; }
     }
 
+#if SERIALIZATION
     [Serializable]
+#endif
     public sealed class ScheduledUpdate
     {
         public ScheduledUpdate(long replayMax)
@@ -139,6 +143,16 @@ namespace Akka.Persistence
         /// Gets the <see cref="ViewId"/>.
         /// </summary>
         public string SnapshotterId { get { return ViewId; } }
+
+        /// <summary>
+        /// Returns true if this persistent view is currently recovering.
+        /// </summary>
+        public bool IsRecovering { get { return _currentState.IsRecoveryRunning; } }
+
+        /// <summary>
+        /// Returns true if this persistent view has successfully finished recovery.
+        /// </summary>
+        public bool IsRecoveryFinished { get { return !IsRecovering; } }
 
         /// <summary>
         /// If true, the currently processed message was persisted - it sent from the <see cref="Journal"/>.

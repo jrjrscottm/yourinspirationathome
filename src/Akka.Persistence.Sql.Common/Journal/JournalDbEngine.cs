@@ -29,10 +29,10 @@ namespace Akka.Persistence.Sql.Common.Journal
         public readonly long SequenceNr;
         public readonly bool IsDeleted;
         public readonly string Manifest;
-        public readonly DateTime Timestamp;
+        public readonly long Timestamp;
         public readonly object Payload;
 
-        public JournalEntry(string persistenceId, long sequenceNr, bool isDeleted, string manifest, DateTime timestamp, object payload)
+        public JournalEntry(string persistenceId, long sequenceNr, bool isDeleted, string manifest, long timestamp, object payload)
         {
             PersistenceId = persistenceId;
             SequenceNr = sequenceNr;
@@ -52,7 +52,7 @@ namespace Akka.Persistence.Sql.Common.Journal
         /// Settings applied to journal mapped from HOCON config file.
         /// </summary>
         public readonly JournalSettings Settings;
-        
+
         /// <summary>
         /// Timestamp provider used for generation of timestamps for incoming persistent messages.
         /// </summary>
@@ -134,7 +134,7 @@ namespace Akka.Persistence.Sql.Common.Journal
 
                 var sqlCommand = QueryBuilder.SelectEvents(hints);
                 CompleteCommand(sqlCommand, connection);
-                
+
                 var reader = await sqlCommand.ExecuteReaderAsync(_pendingRequestsCancellation.Token);
                 try
                 {
@@ -170,7 +170,7 @@ namespace Akka.Persistence.Sql.Common.Journal
 
                 var sqlCommand = QueryBuilder.SelectMessages(persistenceId, fromSequenceNr, toSequenceNr, max);
                 CompleteCommand(sqlCommand, connection);
-                
+
                 var reader = await sqlCommand.ExecuteReaderAsync(_pendingRequestsCancellation.Token);
 
                 try
@@ -220,7 +220,7 @@ namespace Akka.Persistence.Sql.Common.Journal
                 {
                     await connection.OpenAsync();
 
-                    var persistentMessages = ((IImmutableList<IPersistentRepresentation>) message.Payload).ToArray();
+                    var persistentMessages = ((IImmutableList<IPersistentRepresentation>)message.Payload).ToArray();
                     var sqlCommand = QueryBuilder.InsertBatchMessages(persistentMessages);
                     CompleteCommand(sqlCommand, connection);
 
@@ -302,7 +302,7 @@ namespace Akka.Persistence.Sql.Common.Journal
         {
             var type = Type.GetType(Settings.TimestampProvider, true);
             var instance = Activator.CreateInstance(type);
-            return (ITimestampProvider) instance;
+            return (ITimestampProvider)instance;
         }
 
         private async Task InsertInTransactionAsync(DbCommand sqlCommand, IEnumerable<JournalEntry> journalEntries)

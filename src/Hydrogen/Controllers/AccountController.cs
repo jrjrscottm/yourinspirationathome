@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Hydrogen.Services.Actors;
 using Hydrogen.Services.Users;
 using Hydrogen.Core.Domain.Consultants;
 
@@ -26,6 +27,7 @@ namespace Hydrogen.Controllers
         private readonly IUserService _userService;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
+        private readonly ActorService _actorService;
         private readonly ILogger _logger;
 
         public AccountController(
@@ -34,6 +36,7 @@ namespace Hydrogen.Controllers
             IUserService userService,
             IEmailSender emailSender,
             ISmsSender smsSender,
+            ActorService actorService,
             ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
@@ -41,6 +44,7 @@ namespace Hydrogen.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
+            _actorService = actorService;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 

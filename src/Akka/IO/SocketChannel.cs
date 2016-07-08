@@ -9,6 +9,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using Akka.Actor;
+using System.Threading.Tasks;
 
 namespace Akka.IO
 {
@@ -23,7 +24,11 @@ namespace Akka.IO
         private readonly Socket _socket;
         private IActorRef _connection;
         private bool _connected;
+#if netcoreapp10
+        private Task _connectResult;
+#else
         private IAsyncResult _connectResult;
+#endif
             
         public SocketChannel(Socket socket) 
         {
@@ -56,7 +61,26 @@ namespace Akka.IO
         {
             return _connected;
         }
+#if netcoreapp10
+        public bool Connect(EndPoint address)
+        {
+            _connectResult = _socket.ConnectAsync(address);
+            _connectResult.Wait();
+            if (_connectResult.IsCompleted)
+            {
+                _connected = true;
+                return true;
+            }
+            return false;
+        }
 
+        public bool FinishConnect()
+        {
+            if (_connectResult.IsCompleted)
+                return true;
+            return _connected;
+        }
+#else
         public bool Connect(EndPoint address)
         {
             _connectResult = _socket.BeginConnect(address, ar => { }, null);
@@ -68,6 +92,7 @@ namespace Akka.IO
             }
             return false;
         }
+
         public bool FinishConnect()
         {
             if (_connectResult.CompletedSynchronously)
@@ -79,6 +104,7 @@ namespace Akka.IO
             }
             return _connected;
         }
+#endif
 
         public SocketChannel Accept()
         {
@@ -112,7 +138,7 @@ namespace Akka.IO
         public void Close()
         {
             _connected = false;
-            _socket.Close();
+            _socket.Dispose();
         }
         internal IActorRef Connection { get { return _connection; } }
     }

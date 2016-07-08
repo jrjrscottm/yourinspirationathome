@@ -14,7 +14,9 @@ using Akka.Tools.MatchHandler;
 
 namespace Akka.Persistence
 {
+#if SERIALIZATION
     [Serializable]
+#endif
     public sealed class RecoveryCompleted
     {
         public static readonly RecoveryCompleted Instance = new RecoveryCompleted();
@@ -39,7 +41,9 @@ namespace Akka.Persistence
     /// <see cref="SnapshotOffer"/> message, followed by replayed messages, if any, that are younger than the snapshot, up to the
     /// specified upper sequence number bound (<see cref="ToSequenceNr"/>).
     /// </summary>
+#if SERIALIZATION
     [Serializable]
+#endif
     public sealed class Recovery
     {
         public static readonly Recovery Default = new Recovery(SnapshotSelectionCriteria.Latest);
@@ -209,9 +213,9 @@ namespace Akka.Persistence
 
         /// <summary>
         /// Changes the actor's behavior and replaces the current receive handler with the specified handler.
-        /// The current handler is stored on a stack, and you can revert to it by calling <see cref="IUntypedActorContext.UnbecomeStacked"/>
+        /// The current handler is stored on a stack, and you can revert to it by calling <see cref="IActorContext.UnbecomeStacked"/>
         /// <remarks>Please note, that in order to not leak memory, make sure every call to <see cref="BecomeStacked"/>
-        /// is matched with a call to <see cref="IUntypedActorContext.UnbecomeStacked"/>.</remarks>
+        /// is matched with a call to <see cref="IActorContext.UnbecomeStacked"/>.</remarks>
         /// </summary>
         /// <param name="receive">The new message handler.</param>
         protected void BecomeStacked(UntypedReceive receive)

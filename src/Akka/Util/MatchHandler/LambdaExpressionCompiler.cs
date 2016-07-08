@@ -20,7 +20,7 @@ namespace Akka.Tools.MatchHandler
 
         public void CompileToMethod(LambdaExpression expression, MethodBuilder method)
         {
-            expression.CompileToMethod(method);
+            new LambdaExpressionCompiler().CompileToMethod(expression, method);
         }
     }
 }

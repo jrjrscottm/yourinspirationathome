@@ -2,6 +2,7 @@
 using Hydrogen.Infrastructure.Authorization;
 using Hydrogen.Integration.Cinsay;
 using Hydrogen.Services;
+using Hydrogen.Services.Actors;
 using Hydrogen.Services.Events;
 using Hydrogen.Services.Payments;
 using Hydrogen.Services.Subscriptions;
@@ -20,7 +21,7 @@ namespace Hydrogen
             services.AddTransient<IPaymentService, BraintreePaymentService>();
             services.AddTransient<IPaymentCommandHandler, PaymentCommandHandler>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
-
+            services.AddSingleton<ActorService>();
             services.AddTransient<IVideoStoreService, VideoStoreService>();
             services.AddTransient<ICinsayClient, CinsayClient>(sp =>
             new CinsayClient(
