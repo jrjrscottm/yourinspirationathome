@@ -26,6 +26,8 @@ using Hydrogen.Models;
 using Braintree;
 using Hydrogen.Services.Payments;
 using Hydrogen.Infrastructure;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Threading.Tasks;
 
 namespace Hydrogen
 {
@@ -124,9 +126,9 @@ namespace Hydrogen
             if (env.IsDevelopment() || env.IsEnvironment("Azure"))
             {
                 app.UseBrowserLink();
-                //app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
-                //app.UseStatusCodePages();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                app.UseStatusCodePages();
                 app.UseStatusCodePagesWithRedirects("/error/{0}");
                 loggerFactory.AddDebug(LogLevel.Debug);
 
@@ -158,66 +160,82 @@ namespace Hydrogen
 
             //app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
             app.UseGlobalExceptions();
+
             app.UseMultitenancy<ApplicationTenant>();
 
-            
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "ExternalTemp",
+                AutomaticAuthenticate = false,
+            });
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                LoginPath = new PathString("/account/login"),
+                AccessDeniedPath = new PathString("/account/forbidden"),
+                AuthenticationScheme = "Cookies",
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+            });
 
             app.UsePerTenant<ApplicationTenant>((context, builder) =>
             {
-                if (context.Tenant.Name != "Nucleon Lab")
+
+
+                
+
+
+                if (context.Tenant.SupportedLoginTypes != null
+                        && context.Tenant.SupportedLoginTypes.Contains("google"))
                 {
-                    builder.UseCookieAuthentication(new CookieAuthenticationOptions
+
+                    var clientId = Configuration[$"{context.Tenant.Id}:GoogleClientId"];
+                    var clientSecret = Configuration[$"{context.Tenant.Id}:GoogleClientSecret"];
+
+                    if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
                     {
-                        AuthenticationScheme = $"Cookies{context.Tenant.Id}",
-                        LoginPath = new PathString("/account/login"),
-                        AccessDeniedPath = new PathString("/account/forbidden"),
-                        AutomaticAuthenticate = true,
-                        AutomaticChallenge = true,
-                        CookieName = $"{context.Tenant.Id}.AspNet.Cookies"
-                    });
+                        Log.Warning("Using {clientId}, {clientSecret} for tenant {tenant}", clientId, clientSecret, context.Tenant.Name);
 
-                    if (context.Tenant.SupportedLoginTypes != null
-                            && context.Tenant.SupportedLoginTypes.Contains("google"))
-                    {
 
-                        var clientId = Configuration[$"{context.Tenant.Id}:GoogleClientId"];
-                        var clientSecret = Configuration[$"{context.Tenant.Id}:GoogleClientSecret"];
-
-                        if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
+                        builder.UseGoogleAuthentication(new GoogleOptions
                         {
-                            Log.Warning("Using {clientId}, {clientSecret} for tenant {tenant}", clientId, clientSecret, context.Tenant.Name);
+                            AuthenticationScheme = "Google",
+                            SignInScheme = "ExternalTemp",
 
+                            //CallbackPath = "/account/externallogincallback",
 
-                            builder.UseGoogleAuthentication(new GoogleOptions
+                            ClientId = Configuration[$"{context.Tenant.Id}:GoogleClientId"],
+                            ClientSecret = Configuration[$"{context.Tenant.Id}:GoogleClientSecret"],
+                            Events = new OAuthEvents
                             {
-                                AuthenticationScheme = "Google",
-                                SignInScheme = "Cookies",
-                                CallbackPath = "/account/externallogincallback",
+                                OnTicketReceived = c =>
+                                {
+                                    
+                                    return Task.FromResult(0);
+                                },
+                                OnCreatingTicket = c =>
+                                {
+                                    return Task.FromResult(0);
+                                }
+                            }
 
-                                ClientId = Configuration[$"{context.Tenant.Id}:GoogleClientId"],
-                                ClientSecret = Configuration[$"{context.Tenant.Id}:GoogleClientSecret"]
-                            });
-                        } else
-                        {
-                            Log.Warning("No Google client secret found, skipping for tenant @{tenant}", context.Tenant.Name);
-                        }
+                        });
+                    } else
+                    {
+                        Log.Warning("No Google client secret found, skipping for tenant @{tenant}", context.Tenant.Name);
                     }
                 }
-
-                app.UseIdentity();
             });
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseIdentity();
-            app.UseSession();
 
             app.UseClaimsTransformation(new ClaimsTransformationOptions
             {
                 Transformer = new HydrogenClaimsTransformer()
             });
-
-            
 
             app.UseMvc(routes =>
             {

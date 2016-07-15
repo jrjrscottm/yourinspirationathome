@@ -9,8 +9,12 @@ namespace Hydrogen.ViewModels.Account
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Full Name")]
-        public string FullName { get; set; }
+        [Display(Name="First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
         [Required]
         [Display(Name = "Consultant ID")]
@@ -19,6 +23,7 @@ namespace Hydrogen.ViewModels.Account
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required]
@@ -35,5 +40,37 @@ namespace Hydrogen.ViewModels.Account
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public bool TermsAccepted { get; set; }
+    }
+
+    public class ExternalRegisterViewModel
+    {
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Consultant ID")]
+        public string ConsultantId { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+
+        [Required]
+        public bool TermsAccepted { get; set; }
+        public string ExternalLoginId { get; set; }
     }
 }

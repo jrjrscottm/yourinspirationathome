@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model VideoStoreViewModel
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        @{
+
+            var active = false;
+            @foreach (var item in Model.Videos)
+            {
+
+                <div class="item @(active == false ? "active" : "")">
+                    <img src="@item.ImagePath">
+                    <div class="carousel-caption">
+                        <h4><a href="#">@item.Name</a></h4>
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat. <a class="label label-primary" href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank">Free Bootstrap Carousel Collection</a></p>
+                    </div>
+                </div>
+                active = true;
+            }
+        }
+    </div><!-- End Carousel Inner -->
+
+
+    <ul class="list-group col-sm-4">
+        @{ 
+
+            var count = 0;
+            foreach (var item in Model.Videos)
+            {
+                <li data-target="#myCarousel" data-slide-to="@count" class="list-group-item active"><h4>@item.Name</h4></li>
+                count++;
+            }
+        }
+    </ul>
+
+    <!-- Controls -->
+    <div class="carousel-controls">
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+
+</div><!-- End Carousel -->

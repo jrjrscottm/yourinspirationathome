@@ -58,6 +58,11 @@ namespace Hydrogen.Controllers
             return View();
         }
 
+        [HttpGet, AllowAnonymous]
+        public IActionResult Forbidden()
+        {
+            return View("Login");
+        }
         //
         // POST: /Account/Login
         [HttpPost]
@@ -114,15 +119,6 @@ namespace Hydrogen.Controllers
         {
             if (ModelState.IsValid)
             {
-                var names = model.FullName.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries);
-                string lastName = null;
-                var firstName = names[0];
-
-                if (names.Length > 1)
-                {
-                    lastName = names.Skip(1).Aggregate((a, b) => a + " " + b);
-                }
-
                 var user = new IdentityUser
                 {
                     UserName = model.Email,
@@ -134,8 +130,8 @@ namespace Hydrogen.Controllers
                 _userService.ConfirmRegistration(new Consultant()
                 {
                     UserId = user.Id,
-                    FirstName = firstName,
-                    LastName = lastName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     Country = model.Country,
                     ConsultantId = model.ConsultantId
                 });
@@ -157,6 +153,50 @@ namespace Hydrogen.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterExternal(ExternalRegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var externalPrincipal = await HttpContext.Authentication.AuthenticateAsync("ExternalTemp");
+
+                var user = new IdentityUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Id = model.ExternalLoginId
+                };
+
+                var result = await _userManager.CreateAsync(user);
+
+                _userService.ConfirmRegistration(new Consultant()
+                {
+                    UserId = user.Id,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Country = model.Country,
+                    ConsultantId = model.ConsultantId,
+                    ExternalLoginId = model.ExternalLoginId
+                });
+
+                var claimsIdentity = new ClaimsIdentity();
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, model.ExternalLoginId));
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.GivenName, model.FirstName));
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.Surname, model.LastName));
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.Email, model.Email));
+                
+                await _signInManager.SignInAsync(user, true);
+               // await HttpContext.Authentication.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity));
+                await HttpContext.Authentication.SignOutAsync("ExternalTemp");
+            }
+
+            return Redirect("/");
         }
 
         //
@@ -189,35 +229,29 @@ namespace Hydrogen.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
         {
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
+            var externalPrincipal = await HttpContext.Authentication.AuthenticateAsync("ExternalTemp");
+            var externalId = externalPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            var existingUser = await _userManager.FindByIdAsync(externalId);
+
+            if (existingUser == null)
             {
-                return RedirectToAction(nameof(Login));
+                var registerViewModel = new ExternalRegisterViewModel()
+                {
+                    Email = externalPrincipal.FindFirst(ClaimTypes.Email).Value,
+                    FirstName = externalPrincipal.FindFirst(ClaimTypes.GivenName).Value,
+                    LastName = externalPrincipal.FindFirst(ClaimTypes.Surname).Value,
+                    Country = externalPrincipal.FindFirst(ClaimTypes.Country)?.Value,
+                    ExternalLoginId = externalId
+                };
+
+                return View("RegisterExternal", registerViewModel);
             }
 
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
-                return RedirectToLocal(returnUrl);
-            }
-            if (result.RequiresTwoFactor)
-            {
-                return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
-            }
-            if (result.IsLockedOut)
-            {
-                return View("Lockout");
-            }
-            else
-            {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
-            }
+            await _signInManager.SignInAsync(existingUser, true);
+            await HttpContext.Authentication.SignOutAsync("ExternalTemp");
+            return Redirect("/");
         }
 
         //

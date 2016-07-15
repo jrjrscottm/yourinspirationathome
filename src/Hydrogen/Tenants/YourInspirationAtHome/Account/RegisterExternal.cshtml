@@ -1,0 +1,13 @@
+﻿@model ExternalRegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+@Html.Partial("SignupFormExternal")
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

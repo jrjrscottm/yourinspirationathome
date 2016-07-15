@@ -1,0 +1,194 @@
+﻿@model RegisterViewModel
+@inject SignInManager<IdentityUser> SignInManager
+
+<div class="container-fluid">
+    <div class="container-fluid" id="register">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                
+                <h2>Please Sign Up <small>It's free and always will be.</small></h2>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                @{
+                    var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                    if (loginProviders.Count > 0)
+                    {
+                        <div class="row">
+                                
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <h4>Use another service to register.</h4>
+                                <section>
+                                    <hr />
+                                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                                        <div>
+                                            <p>
+                                                @foreach (var provider in loginProviders)
+                                                {
+                                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">@provider.AuthenticationScheme</button>
+                                                }
+                                            </p>
+                                        </div>
+                                        @Html.AntiForgeryToken()
+
+                                    </form>
+                                    <hr />
+                                </section>
+                            </div>
+                        </div>
+
+                    }
+
+                }
+                <form asp-controller="Account" asp-action="Register" role="form" method="post">
+                    <h4>Register Here</h4>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="sr-only control-label"></label>
+                                <input type="text" asp-for="FirstName" id="firstName" class="form-control input-lg" placeholder="First Name" tabindex="1"/>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="LastName" class="sr-only control-label"></label>
+                                <input type="text" asp-for="LastName" id="lastName" class="form-control input-lg" placeholder="Last Name" tabindex="2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="sr-only control-label"></label>
+                        <input type="email" asp-for="Email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConsultantId" class="sr-only control-label"></label>
+                        <input type="text" asp-for="ConsultantId" id="distributorId" class="form-control input-lg" placeholder="Distributor ID" tabindex="3">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Country" class="sr-only control-label"></label>
+                        <select asp-for="Country" class="form-control input-lg" id="Country" name="Country">
+                            <option value="">Country...</option>
+                            <option value="ITA">Italy</option>
+                            <option value="USA">United States</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Password" class="sr-only"></label>
+                                <input type="password" asp-for="Password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ConfirmPassword" class="sr-only"></label>
+                                <input type="password" asp-for="ConfirmPassword" name="confirmPassword" id="confirmPassword" class="form-control input-lg" placeholder="Confirm Password"
+                                       tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2>Payment Information <small>It's not free.</small></h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="paymentForm"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-2 col-md-2">
+                            <span class="button-checkbox">
+                                <button type="button" class="btn" data-color="info" tabindex="7">I Agree</button>
+                                <label asp-for="TermsAccepted" class="sr-only" />
+                                <input type="checkbox" asp-for="TermsAccepted" name="TermsAccepted" id="TermsAccepted" class="hidden" value="1">
+                            </span>
+                        </div>
+                        <div class="col-xs-8 col-sm-10 col-md-10">
+                            <small>
+                                By clicking <strong class="label label-primary">Register</strong>, you agree to the
+                                <a href="#" data-toggle="modal" data-target="#termsAndConditions">Terms and Conditions</a> set out by this site, including our Cookie Use.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-2 col-xs-8 col-md-offset-2 col-md-8">
+                            <input type="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-6">
+                            <a href="/account/login" id="loginLink">Already a member? Sign in here.</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="termsAndConditions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Terms & Conditions</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum
+                        at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa
+                        porro delectus quidem dolorem ad.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<script src="https://js.braintreegateway.com/js/braintree-2.26.0.min.js"></script>
+<script>
+    // We generated a client token for you so you can test out this code
+    // immediately. In a production-ready integration, you will need to
+    // generate a client token on your server (see section below).
+    var clientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJlNzA5YjJlYTgzYTRhZGQwMDA4ODJlOTFlMjU1ZThkMDM0MDY2NTdjZGVhNTY4NGNiZjcyMGUwNDkwOTBhN2ExfGNyZWF0ZWRfYXQ9MjAxNi0wNy0xMlQyMTo0ODo1Ni4xMTg1NTE2MzMrMDAwMFx1MDAyNm1lcmNoYW50X2lkPTM0OHBrOWNnZjNiZ3l3MmJcdTAwMjZwdWJsaWNfa2V5PTJuMjQ3ZHY4OWJxOXZtcHIiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvMzQ4cGs5Y2dmM2JneXcyYi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzM0OHBrOWNnZjNiZ3l3MmIvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tLzM0OHBrOWNnZjNiZ3l3MmIifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6ImFjbWV3aWRnZXRzbHRkc2FuZGJveCIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiMzQ4cGs5Y2dmM2JneXcyYiIsInZlbm1vIjoib2ZmIn0=";
+    
+    braintree.setup(clientToken, "dropin", {
+        container: "paymentForm"
+    });
+</script>

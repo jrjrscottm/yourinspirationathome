@@ -13,7 +13,7 @@ namespace Hydrogen.Core.Domain.Consultants
 
         public string UserId { get; set; }
         public string ConsultantId { get; set; }
-
+        public string ExternalLoginId { get; set;}
         public UserRef User { get; set; }
 
         public ICollection<PaymentMethod> PaymentMethods { get; set; }
