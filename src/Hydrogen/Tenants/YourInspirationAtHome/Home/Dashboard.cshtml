@@ -2,7 +2,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model VideoStoreViewModel
-
+<style>
+    .body-content {
+        background: transparent;
+    }
+</style>
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
     <!-- Wrapper for slides -->
@@ -16,8 +20,12 @@
                 <div class="item @(active == false ? "active" : "")">
                     <img src="@item.ImagePath">
                     <div class="carousel-caption">
-                        <h4><a href="#">@item.Name</a></h4>
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat. <a class="label label-primary" href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank">Free Bootstrap Carousel Collection</a></p>
+                        <h4>@item.Name</h4>
+                        <div class="fb-share-button"
+                             data-href="@item.Url"
+                             data-layout="button">
+                        </div>
+                        <p>@item.Description</p>
                     </div>
                 </div>
                 active = true;
@@ -27,13 +35,16 @@
 
 
     <ul class="list-group col-sm-4">
-        @{ 
+        @{
 
             var count = 0;
+            active = false;
             foreach (var item in Model.Videos)
             {
-                <li data-target="#myCarousel" data-slide-to="@count" class="list-group-item active"><h4>@item.Name</h4></li>
+                <li data-target="#myCarousel" data-slide-to="@count" class="list-group-item  @(active == false ? "active" : "")"><h4>@item.Name</h4></li>
+                active = true;
                 count++;
+
             }
         }
     </ul>
@@ -49,3 +60,15 @@
     </div>
 
 </div><!-- End Carousel -->
+
+@section scripts {
+<div id="fb-root"></div>
+<script>
+            (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=1724067881169895";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+}

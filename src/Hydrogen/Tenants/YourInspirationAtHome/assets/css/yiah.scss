@@ -1,4 +1,4 @@
-﻿@import '../../../../wwwroot/css/defaults';
+﻿@import '../../../../wwwroot/css/defaults.scss';
 
 body {
     font-family: 'Ropa Sans', sans-serif;
@@ -6,6 +6,11 @@ body {
         #423629
         url("/themes/yourinspirationathome/images/brown_linen_background.jpg") repeat;
 }
+
+.body-content {
+  font-family: 'Ropa Sans', sans-serif;
+  background: #fff;
+  margin-top: 110px; }
 
 .jumbotron {
     margin-top: 35px;
@@ -25,13 +30,18 @@ body {
 .btn-primary {
     font-family: Teko, sans-serif;
     font-size: 25px;
-    background-color: #271d16;    border: 1px solid #ac9e91;
+    background-color: #271d16;
+    border: 1px solid #ac9e91;
     color: #fff;
 
     :focus, :hover, :active:focus {
         background-color: #77ae9a;
         border: 1px solid #ac9e91;
     }
+}
+
+.navbar-brand {
+    padding:0px;
 }
 
 .registration {
@@ -77,4 +87,64 @@ body {
             margin: auto;
         }
     }
+}
+
+
+#myCarousel {
+    margin-top:35px;
+
+    .carousel-caption {
+        left:0;
+	    right:0;
+	    bottom:0;
+	    text-align:left;
+	    padding:10px;
+	    background:rgba(0,0,0,0.6);
+	    text-shadow:none;
+        width:700px;
+
+        h4 {
+            color:#fff;
+        }
+    }
+
+    .list-group {
+	    position:absolute;
+	    top:0;
+	    right:0;
+        
+        .active {
+	        background-color: rgb(129,122,114);
+            color: #fff;
+        }
+    }
+
+    .list-group-item {
+	    border-radius:0px;
+        border-style:none;
+	    cursor:pointer;
+        background-color: transparent;
+        color: rgb(164,139,121); 
+    }
+}
+
+.fb-share-button { 
+    min-height: 20px;
+}
+
+footer {
+    hr {color:#fff;}
+    p {
+        text-align: right;
+        color: rgb(164,139,121);
+    }
+}
+
+@media (min-width: 992px) { 
+	#myCarousel {padding-right:33.3333%;}
+	#myCarousel .carousel-controls {display:none;} 	
+}
+@media (max-width: 991px) { 
+	.carousel-caption p,
+	#myCarousel .list-group {display:none;} 
 }

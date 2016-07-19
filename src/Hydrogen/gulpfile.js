@@ -89,7 +89,7 @@ gulp.task("copy:tenant:css", function() {
     return folders.map(function (folder) {
         folder = folder.toLowerCase();
 
-        return gulp.src(path.join(paths.tenantRoot, folder, '/**/*.css'))
+        return gulp.src([path.join(paths.tenantRoot, folder, '/**/*.css'), '!' + path.join(paths.tenantRoot, folder, '/**/*.min.css')])
             .pipe(concat(folder + ".css"))
             .pipe(gulp.dest(paths.themeCssDest + folder + "/css/"));
     });

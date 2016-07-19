@@ -54,7 +54,8 @@ namespace Hydrogen.Controllers
                     ImagePath = v.ImagePath,
                     EmbedCode = v.EmbedCode,
                     Url = v.Url,
-                    Name = v.Title
+                    Name = v.Title,
+                    Description = v.Description
                 }).ToList()
             };
 

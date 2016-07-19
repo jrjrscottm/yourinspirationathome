@@ -17,6 +17,11 @@ body {
   font-family: 'Ropa Sans', sans-serif;
   background: #423629 url("/themes/yourinspirationathome/images/brown_linen_background.jpg") repeat; }
 
+.body-content {
+  font-family: 'Ropa Sans', sans-serif;
+  background: #fff;
+  margin-top: 110px; }
+
 .jumbotron {
   margin-top: 35px;
   background-color: #fff; }
@@ -36,6 +41,9 @@ body {
   .btn-primary :focus, .btn-primary :hover, .btn-primary :active:focus {
     background-color: #77ae9a;
     border: 1px solid #ac9e91; }
+
+.navbar-brand {
+  padding: 0px; }
 
 .registration div {
   background-color: #fff; }
@@ -65,4 +73,52 @@ body {
     .tool-card.tool-box h5 {
       width: 40px;
       margin: auto; }
+
+#myCarousel {
+  margin-top: 35px; }
+  #myCarousel .carousel-caption {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: left;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    text-shadow: none;
+    width: 700px; }
+    #myCarousel .carousel-caption h4 {
+      color: #fff; }
+  #myCarousel .list-group {
+    position: absolute;
+    top: 0;
+    right: 0; }
+    #myCarousel .list-group .active {
+      background-color: #817a72;
+      color: #fff; }
+  #myCarousel .list-group-item {
+    border-radius: 0px;
+    border-style: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #a48b79; }
+
+.fb-share-button {
+  min-height: 20px; }
+
+footer hr {
+  color: #fff; }
+
+footer p {
+  text-align: right;
+  color: #a48b79; }
+
+@media (min-width: 992px) {
+  #myCarousel {
+    padding-right: 33.3333%; }
+  #myCarousel .carousel-controls {
+    display: none; } }
+
+@media (max-width: 991px) {
+  .carousel-caption p,
+  #myCarousel .list-group {
+    display: none; } }
 
