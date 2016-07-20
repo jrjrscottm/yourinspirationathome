@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
+/// <reference path="../tenants/agel.js" />
 /// <reference path="../tenants/agel/assets/scripts/agel.js" />
 /// <reference path="../Themes/Paperkit/assets/scripts/chartist.min.js" />
 /// <reference path="../Themes/Paperkit/assets/scripts/paper-dashboard.js" />

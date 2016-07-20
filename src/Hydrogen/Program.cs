@@ -20,7 +20,7 @@ namespace Hydrogen
             var host = new WebHostBuilder()
                .UseKestrel()
                .UseContentRoot(Directory.GetCurrentDirectory())
-               .UseConfiguration(config)
+               //.UseConfiguration(config)
                .UseIISIntegration()
                .UseStartup<Startup>()
                .Build();

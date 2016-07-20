@@ -139,7 +139,6 @@ namespace Hydrogen
                 app.UseStatusCodePages();
                 app.UseStatusCodePagesWithRedirects("/error/{0}");
                 loggerFactory.AddDebug(LogLevel.Debug);
-
             }
             else
             {
