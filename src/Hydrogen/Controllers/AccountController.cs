@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Hydrogen.Services.Actors;
 using Hydrogen.Services.Users;
 using Hydrogen.Core.Domain.Consultants;
+using Hydrogen.Services.Payments;
 
 namespace Hydrogen.Controllers
 {
@@ -28,6 +29,7 @@ namespace Hydrogen.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ActorService _actorService;
+        private readonly IPaymentService _paymentService;
         private readonly ILogger _logger;
 
         public AccountController(
@@ -37,6 +39,7 @@ namespace Hydrogen.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ActorService actorService,
+            IPaymentService paymentService,
             ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
@@ -45,6 +48,7 @@ namespace Hydrogen.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _actorService = actorService;
+            _paymentService = paymentService;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -107,6 +111,8 @@ namespace Hydrogen.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            ViewBag.PaymentClientToken = _paymentService.GetClientToken();
+
             return View();
         }
 
@@ -115,7 +121,8 @@ namespace Hydrogen.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        //TODO: Figure out custom model binding, BindAliasAttribute not working currently.
+        public async Task<IActionResult> Register(LocalRegisterViewModel model, string payment_method_nonce)
         {
             if (ModelState.IsValid)
             {
@@ -127,14 +134,19 @@ namespace Hydrogen.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                _userService.ConfirmRegistration(new Consultant()
+                var consultant = new Consultant()
                 {
                     UserId = user.Id,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    EmailAddress = user.Email,
                     Country = model.Country,
-                    ConsultantId = model.ConsultantId
-                });
+                    ConsultantId = model.ConsultantId,
+                };
+
+                _userService.ConfirmRegistration(consultant);
+
+                _userService.SubscribeNewUser(consultant, payment_method_nonce);
 
                 if (result.Succeeded)
                 {
@@ -160,7 +172,7 @@ namespace Hydrogen.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterExternal(ExternalRegisterViewModel model)
+        public async Task<IActionResult> RegisterExternal(ExternalRegisterViewModel model, string payment_method_nonce)
         {
             if (ModelState.IsValid)
             {
@@ -175,15 +187,20 @@ namespace Hydrogen.Controllers
 
                 var result = await _userManager.CreateAsync(user);
 
-                _userService.ConfirmRegistration(new Consultant()
+                var consultant = new Consultant()
                 {
                     UserId = user.Id,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    EmailAddress = user.Email,
                     Country = model.Country,
                     ConsultantId = model.ConsultantId,
                     ExternalLoginId = model.ExternalLoginId
-                });
+                };
+
+                _userService.ConfirmRegistration(consultant);
+
+                _userService.SubscribeNewUser(consultant, payment_method_nonce);
 
                 var claimsIdentity = new ClaimsIdentity();
                 claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, model.ExternalLoginId));
@@ -217,6 +234,7 @@ namespace Hydrogen.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
+            HttpContext.Authentication.SignOutAsync("ExternalTemp");
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -245,6 +263,8 @@ namespace Hydrogen.Controllers
                     Country = externalPrincipal.FindFirst(ClaimTypes.Country)?.Value,
                     ExternalLoginId = externalId
                 };
+
+                ViewBag.PaymentClientToken = _paymentService.GetClientToken();
 
                 return View("RegisterExternal", registerViewModel);
             }

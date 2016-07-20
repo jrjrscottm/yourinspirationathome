@@ -19,7 +19,7 @@ namespace Hydrogen.Data
                 {
                     context.Subscriptions.Add(new Subscription
                     {
-                        SubscriptionId = "subscription/myvideostore",
+                        SubscriptionId = "subscription-videostore",
                         Name = "Cinsay Video Store",
                         DisplayName = "My Video Store"
                     });

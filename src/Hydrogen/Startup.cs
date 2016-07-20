@@ -28,6 +28,8 @@ using Hydrogen.Services.Payments;
 using Hydrogen.Infrastructure;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Threading.Tasks;
+using Hydrogen.Infrastructure.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hydrogen
 {
@@ -79,6 +81,12 @@ namespace Hydrogen
 
             services.AddMemoryCache();
             services.AddSession();
+
+            //services.Configure<MvcOptions>(opt =>
+            //{
+            //    opt.ModelBinderProviders..Add(new HydrogenModelBinderProvider());
+            //});
+
             services.AddMvc();
 
             services.AddHydrogenServices(Configuration);
@@ -159,7 +167,7 @@ namespace Hydrogen
             }
 
             //app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-            app.UseGlobalExceptions();
+            //app.UseGlobalExceptions();
 
             app.UseMultitenancy<ApplicationTenant>();
 
@@ -180,11 +188,6 @@ namespace Hydrogen
 
             app.UsePerTenant<ApplicationTenant>((context, builder) =>
             {
-
-
-                
-
-
                 if (context.Tenant.SupportedLoginTypes != null
                         && context.Tenant.SupportedLoginTypes.Contains("google"))
                 {

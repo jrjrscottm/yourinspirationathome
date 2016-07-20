@@ -7,6 +7,7 @@
         background: transparent;
     }
 </style>
+
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
     <!-- Wrapper for slides -->
@@ -25,6 +26,11 @@
                              data-href="@item.Url"
                              data-layout="button">
                         </div>
+                        <a href="https://twitter.com/share" 
+                           class="twitter-share-button" 
+                           data-text="@item.Name" 
+                           data-url="@item.Url" 
+                           data-show-count="false">Tweet</a>
                         <p>@item.Description</p>
                     </div>
                 </div>
@@ -70,5 +76,7 @@
             js = d.createElement(s); js.id = id;
             js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=1724067881169895";
             fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));</script>
+            }(document, 'script', 'facebook-jssdk'));
+</script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 }

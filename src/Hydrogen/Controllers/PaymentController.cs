@@ -37,19 +37,5 @@ namespace Hydrogen.Controllers
             };
             return View(model);
         }
-
-        [Authorize, HttpPost, Route("account/payment-details")]
-        public IActionResult Index(string payment_method_nonce)
-        {
-            var userId = _userManager.GetUserId(User);
-            var result = _commandHandler.Handle(new CreateUserPaymentMethod()
-            {
-                ReferenceId = payment_method_nonce,
-                UserId = userId
-            });
-
-            return Redirect("/account/payment-details");
-        }
-
     }
 }

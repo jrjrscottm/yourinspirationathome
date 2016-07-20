@@ -18,8 +18,7 @@ namespace Hydrogen
     {
         public static IServiceCollection AddHydrogenServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IPaymentService, BraintreePaymentService>();
-            services.AddTransient<IPaymentCommandHandler, PaymentCommandHandler>();
+            
             services.AddTransient<ISubscriptionService, SubscriptionService>();
             services.AddSingleton<ActorService>();
             services.AddTransient<IVideoStoreService, VideoStoreService>();
@@ -35,15 +34,17 @@ namespace Hydrogen
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MyVideoStore", policy =>
-                policy.Requirements.Add(new SubscriptionRequirement("subscription/myvideostore")));
+                policy.Requirements.Add(new SubscriptionRequirement("subscription-videostore")));
             });
 
             services.AddTransient<IConsultantAppService, ConsultantApplicationService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEventBus, EventBus>();
+
             services.AddSingleton<IAuthorizationHandler, SubscriptionAuthorizationHandler>();
 
-
+            services.AddTransient<IPaymentService, BraintreePaymentService>();
+            services.AddTransient<IPaymentCommandHandler, PaymentCommandHandler>();
             services.AddSingleton<IBraintreeGateway>(sp => new BraintreeGateway(
                 new Configuration
                 {

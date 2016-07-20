@@ -12,7 +12,8 @@ using Hydrogen.Core.Exceptions;
 
 namespace Hydrogen.Services.Payments
 {
-    public interface IAddPaymentMethodHandler : ICommandHandler<CreateUserPaymentMethod, CreatePaymentMethodResult>
+    public interface IAddPaymentMethodHandler : 
+        ICommandHandler<CreateUserPaymentAccount, CreateUserPaymentAccountResult>
     {
     }
 
@@ -37,75 +38,28 @@ namespace Hydrogen.Services.Payments
             _log = log;
         }
 
-        public CreatePaymentMethodResult Handle(CreateUserPaymentMethod command)
+        public CreateUserPaymentAccountResult Handle(CreateUserPaymentAccount command)
         {
-            try
-            {
-                var consultant = _context.Consultants.SingleOrDefault(x => x.UserId == command.UserId);
-
-                if(consultant == null)
-                {
-                    _log.Error("Unable to find consultant with ID {consultantId}", command.UserId);
-
-                    throw new UnknownUserException(command.UserId);
-                }
-
-                if (string.IsNullOrEmpty(command.ReferenceId))
-                {
-                    command.ReferenceId = _paymentService.AuthorizeCreditCard(
-                            consultant.UserId,
-                            command.CardNumber,
-                            command.ExpirationMonth,
-                            command.ExpirationYear,
-                            command.SecurityCode
-                        );
-                }
-
-                var paymentMethod = new Domain.Payments.PaymentMethod()
-                {
-                    Description = $"CC: VISA ending in 1111",
-                    UserId = consultant.UserId,
-                    ConsultantId = consultant.ConsultantId
-                };
-                
-                paymentMethod.Activate(command.ReferenceId);
-
-                if(consultant.PaymentMethods == null)
-                {
-                    consultant.PaymentMethods = new List<Domain.Payments.PaymentMethod>() { paymentMethod };
-                } else
-                {
-                    consultant.PaymentMethods.Add(paymentMethod);
-                }
-
-                _context.SaveChanges();
-
-                return new CreatePaymentMethodResult();
-            }
-            catch(ArgumentNullException e)
-            {
-                _log.Error(e, "Unable to create payment method.");
-                return new CreatePaymentMethodResult("Unable to create payment method.");
-            }
-            catch(Exception e)
-            {
-                Log.Error(e, "An unknown error occured");
-                return new CreatePaymentMethodResult("An unknown error occurred.");
-            }
+            throw new NotImplementedException();
         }
     }
 
+    public interface IHostedPaymentService
+    {
+        string GetClientToken(string customerId = null);
+    }
 
     public interface IPaymentAuthorizationService
     {
-        string GetClientToken();
         string AuthorizeCreditCard(string customerId, string cardNumber, int expMonth, int expYear, string securityCode);
         
     }
 
-    public interface IPaymentService : IPaymentAuthorizationService
+    public interface IPaymentService : IPaymentAuthorizationService, IHostedPaymentService
     {
         Domain.Payments.PaymentMethod GetPaymentMethodForUser(string id);
+        bool CreatePaymentAccount(string userId, string paymentMethodNonce);
+        bool CreatePaymentAccountSubscription(string userId, string distributorId, string firstName, string lastName, string email, string paymentMethodNonce);
     }
 
     public class BraintreePaymentService : IPaymentService
@@ -120,6 +74,68 @@ namespace Hydrogen.Services.Payments
             _context = context;
             _log = log;
         }
+
+        public bool CreatePaymentAccount(string userId, string paymentMethodNonce)
+        {
+            var customerRequest = new CustomerRequest()
+            {
+                CustomerId = userId,
+                PaymentMethodNonce = paymentMethodNonce
+            };
+
+            var result = _gateway.Customer.Create(customerRequest);
+
+            if(result.IsSuccess())
+            {
+                return true;
+            }
+
+            foreach(var error in result.Errors.All())
+            {
+                _log.Error("Unable to create payment account for {userId}: {code} {message}", userId, error.Code, error.Message);
+            }
+            return false;
+        }
+
+        public bool CreatePaymentAccountSubscription(string userId, string distributorId, string firstName, string lastName, string email, string paymentMethodNonce)
+        {
+            var customerRequest = new CustomerRequest
+            {
+                CustomerId = userId,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PaymentMethodNonce = paymentMethodNonce,
+                CustomFields = new Dictionary<string, string>
+                {
+                    { "distributorid", distributorId }
+                }
+            };
+
+            var createCustomerResult = _gateway.Customer.Create(customerRequest);
+
+            if(createCustomerResult.IsSuccess())
+            {
+                var subscriptionRequest = new SubscriptionRequest()
+                {
+                    PaymentMethodToken = createCustomerResult.Target.PaymentMethods[0].Token,
+                    PlanId = "subscription-videostore"
+                };
+
+                var createSubscriptionResult = _gateway.Subscription.Create(subscriptionRequest);
+
+                if (createSubscriptionResult.IsSuccess())
+                {
+                    return true;
+                }
+
+                _log.Error("Unable to create subscription with BrainTree for {consultantId}. {message}", userId, createSubscriptionResult.Message);
+            }
+
+            _log.Error("Unable to create customer with BrainTree for {consultantId}. {message}", userId, createCustomerResult.Message);
+            return false;
+        }
+
         public string AuthorizeCreditCard(string customerId, string cardNumber, int expMonth, int expYear, string securityCode)
         {
             var response = _gateway.PaymentMethod.Create(
@@ -142,8 +158,15 @@ namespace Hydrogen.Services.Payments
             return response.Target.Token;
         }
 
-        public string GetClientToken()
+        public string GetClientToken(string userId = null)
         {
+            if (userId != null)
+            {
+                return _gateway.ClientToken.generate(new ClientTokenRequest
+                {
+                    CustomerId = userId
+                });
+            }
             return _gateway.ClientToken.generate();
         }
 
